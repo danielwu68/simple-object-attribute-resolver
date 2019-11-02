@@ -51,13 +51,15 @@ Returns the value or reference to the element in the data object given by path.
   * the value of the element or the reference to the element in the data object.
 
 ### soar.resolver(path)
-Returns the resolver function for the given path.  It is useful to resolve the same attribute across different data object.
+Returns the curried resolver function for the given path.  It is useful to resolve the same attribute across different data object.
 * params:
   * path - simple dot path expression
 * return:
   * a resolver function for the given path which could resolve the attribute by passing data object.
 
-* Note: As the return value could be the reference to the elements in the data object, modifying the attribute of the reference could affect the source data (shallow copy).
+#### Notes
+1. Be aware of the side effects.  As the return value could be the reference to the elements in the data object, modifying the attribute of the reference could affect the source data (shallow copy).
+2. This module is intented for quickly resolving a value from an input with the given path without having to worry about null, undefined or non-existing element along the path.  If it is desired to find out which part of the path is causing undefined result, either print out both of the input and path to figure it out manually or just execute the actual de-referencing with proper Javascript syntax to cause an Error to be thrown.
 
 ## License
 [MIT](LICENSE)
