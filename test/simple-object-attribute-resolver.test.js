@@ -1,3 +1,4 @@
+const assert = require('assert');
 const { expect } = require('chai');
 
 const ap = require('../.');
@@ -13,6 +14,7 @@ const sample1 = {
     item2level2: [
 
     ]
+    , aFalseValue: false
   },
   'test@test.com' : {
     'howto': 'escape'
@@ -28,8 +30,39 @@ const sample2 = [[1,2,3], [4,5,6]];
 const sample3 = { sample1, sample2 };
 
 describe(`attr-path resolve`, function() {
+  it('return undefined if input obj was false with non-empty path', function() {
+    const path = 'item2.aFalseValue.below.that';
+    let actual;
+    let x = false;
+    
+    actual = ap.resolve(x, path);
+    assert(actual === undefined);
+
+    actual = ap.resolve(sample1, path);
+    assert(actual === undefined);
+  });
+
+  it('return false if input obj was false with empty or undefined path', function() {
+    let path;
+    let actual;
+    let x = false;
+    
+    actual = ap.resolve(x, path);
+    assert(actual === false);
+
+    path = '';
+    actual = ap.resolve(x, path);
+    assert(actual === false);
+  });
+
+  it('returns false if the path resolved is actually false', function() {
+    const path = 'item2.aFalseValue';
+    const actual = ap.resolve(sample1, path);
+    assert(actual === false);
+  });
+
   it('works with dot path', function() {
-    const path = 'item1.item1val2'
+    const path = 'item1.item1val2';
     const actual = ap.resolve(sample1, path);
     expect(actual).equals('happy');
   });

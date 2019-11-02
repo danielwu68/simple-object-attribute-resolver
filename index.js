@@ -2,12 +2,12 @@ const REGEX_ARRAY_REF = /(.*?)\[(.*?)\]/;
 
 function resolveArrayValue(obj, path) {
   let regex = REGEX_ARRAY_REF.exec(path);
-  while(regex && obj && path) {
+  while(regex && obj != null && path) {
     if(regex[0].startsWith('[')) {
       obj = obj[regex[2]];
     } else {
       obj = resolve(obj, regex[1]);
-      if(obj) {
+      if(obj != null) {
         obj = obj[regex[2]];
       }
     }
@@ -50,12 +50,12 @@ function dividePath(path) {
 }
 
 function resolve(obj, path) {
-  if (!obj) {
-    return null;
+  if (obj == null) {
+    return obj;
   }
   let pr;
   [ path, pr ] = dividePath(path);
-  while ( obj && path ) {
+  while ( obj != null && path ) {
     if(path.includes('[')) {
       obj = resolveArrayValue(obj, path);
     } else {
