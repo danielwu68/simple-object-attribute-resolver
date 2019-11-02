@@ -30,7 +30,7 @@ const sample2 = [[1,2,3], [4,5,6]];
 const sample3 = { sample1, sample2 };
 
 describe(`attr-path resolve`, function() {
-  it('return undefined if input obj was false with non-empty path', function() {
+  it('returns undefined if input obj was false with non-empty path', function() {
     const path = 'item2.aFalseValue.below.that';
     let actual;
     let x = false;
@@ -42,7 +42,7 @@ describe(`attr-path resolve`, function() {
     assert(actual === undefined);
   });
 
-  it('return false if input obj was false with empty or undefined path', function() {
+  it('returns false if input obj was false with empty or undefined path', function() {
     let path;
     let actual;
     let x = false;
@@ -73,7 +73,7 @@ describe(`attr-path resolve`, function() {
     expect(actual).equals('Hello');
   });
 
-  it('works with leading dots - e.g. "...item1"', function() {
+  it('ignores leading or repeating dots - e.g. "...item1"', function() {
     const path = '...item1'
     const actual = ap.resolve(sample1, path);
     expect(actual).is.an('object').that.has.property('item1val2');
@@ -91,7 +91,7 @@ describe(`attr-path resolve`, function() {
     expect(actual).equals('yes');
   });
 
-  it('dots after square bracket are ignored', function() {
+  it('ignores dots after square bracket', function() {
     const path = '[test@test.com]...more.detail1';
     const actual = ap.resolve(sample1, path);
     expect(actual).equals('yes');
@@ -109,7 +109,7 @@ describe(`attr-path resolve`, function() {
     expect(actual).equals(6);    
   });
 
-  it('attribute in the resolved path can be modified and alters the input data', function() {
+  it('could alter the attribute of input data with the resolved value', function() {
     const data = {
       l1: {
         l2: 'value1'

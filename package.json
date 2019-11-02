@@ -1,6 +1,6 @@
 {
   "name": "simple-object-attribute-resolver",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple Object Attribute Resolver - Resolves and returns the value from a Javascript object with simple path expression",
   "main": "index.js",
   "scripts": {

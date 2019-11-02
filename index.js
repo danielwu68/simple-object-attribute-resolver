@@ -1,5 +1,10 @@
 const REGEX_ARRAY_REF = /(.*?)\[(.*?)\]/;
 
+/**
+ * Returns the value indexed by the given path in the given obj.
+ * @param {*} obj 
+ * @param {string} path 
+ */
 function resolveArrayValue(obj, path) {
   let regex = REGEX_ARRAY_REF.exec(path);
   while(regex && obj != null && path) {
@@ -17,11 +22,18 @@ function resolveArrayValue(obj, path) {
   return obj;
 }
 
+/**
+ * Breaks the path into 2 parts - the first segment and the rest of the path.
+ * The first segment can be use to dereference the value from the object.
+ * @param {string} path 
+ * @returns {Array} first segment of the path as first and the rest as second.
+ */
 function dividePath(path) {
   if(!path) {
     return [ path, null ];
   }
   let pos = path.indexOf('.');
+  // ignore the leading dots
   while(pos == 0 && path) {
     path = path.substring(1);
     pos = path.indexOf('.');
@@ -49,6 +61,11 @@ function dividePath(path) {
   }
 }
 
+/**
+ * Returns the value referenced by the path in the given object.
+ * @param {*} obj 
+ * @param {string} path 
+ */
 function resolve(obj, path) {
   if (obj == null) {
     return obj;
