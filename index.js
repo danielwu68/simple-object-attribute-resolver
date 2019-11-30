@@ -84,5 +84,42 @@ function resolve(obj, path) {
   return obj;
 }
 
+/**
+ * Returns the value it the attribute referenced by path is already an array.
+ * Otherwise, return an array with the value as the single element in the array.
+ * If the value was null, return an empty array.
+ * 
+ * @param {*} obj 
+ * @param {*} path 
+ */
+function resolveArray(obj, path) {
+  let result = resolve(obj, path);
+  return result == null ? [] 
+    : Array.isArray(result) ? result : [ result ];
+}
+
+/**
+ * Checks if the given obj is empty 
+ */
+exports.isEmpty = (obj) => {
+  if (obj == null) {
+    return true;
+  } 
+  
+  if (obj === false || obj === 0) {
+    return false;
+  }
+
+  for(let prop in obj) {
+    if(obj.hasOwnProperty(prop))
+        return false;
+  }
+
+  return true;
+};
+
 exports.resolve = resolve;
+exports.resolveArray = resolveArray;
+
 exports.resolver = (path) => (obj) => resolve(obj, path);
+exports.arrayResolver = (path) => (obj) => resolveArray(obj, path);

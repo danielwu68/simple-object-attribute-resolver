@@ -14,7 +14,15 @@ const sample1 = {
     item2level2: [
 
     ]
+    , aZero: 0
     , aFalseValue: false
+    , aNullValue: null
+    , anEmptyObject: {}
+    , anEmptyArray: []
+    , aNumber: 123
+    , aString: 'Hello World'
+    , anArrayOfNumbers: [123, 456, 789]
+    , anArrayOfStrings: ['abc', 'def', 'ghi']
   },
   'test@test.com' : {
     'howto': 'escape'
@@ -123,6 +131,79 @@ describe(`attr-path resolve`, function() {
     expect(ref.l2).equals(data.l1.l2);
     expect(ref.l2).not.equals(orig_value);
     expect(data.l1.l2).not.equals(orig_value);
+  });
+
+});
+
+describe(`attr-path resolveArray`, function() {
+  it('returns an empty array for null or empty object', function() {
+    const path = 'item2.aFalseValue.below.that';
+    let actual;
+
+    actual = ap.resolveArray(null, path);
+    expect(actual).to.be.an('array').eql([]);
+
+    actual = ap.resolveArray([], path);
+    expect(actual).to.be.an('array').eql([]);
+
+    actual = ap.resolveArray({}, path);
+    expect(actual).to.be.an('array').eql([]);
+  });
+
+  it('returns an empty array if input obj was false with non-empty path', function() {
+    const path = 'item2.aFalseValue.below.that';
+    let actual;
+    let x = false;
+    
+    actual = ap.resolveArray(x, path);
+    expect(actual).to.be.an('array').eql([]);
+  });
+
+  it('returns an empty array for empty array', function() {
+    const path = 'item2.anEmptyArray';
+    let actual;
+
+    actual = ap.resolveArray(sample1, path);
+    expect(actual).to.be.an('array').eql([]);
+  });
+
+  it('returns an array of empty object for empty object', function() {
+    const path = 'item2.anEmptyObject';
+    let actual;
+
+    actual = ap.resolveArray(sample1, path);
+    expect(actual).to.be.an('array').eql([{}]);
+  });
+
+  it('resolves single value as single element array', function() {
+    let actual;
+
+    actual = ap.resolveArray(sample1, 'item2.aZero');
+    expect(actual).to.be.an('array').eql([0]);
+
+    actual = ap.resolveArray(sample1, 'item2.aFalseValue');
+    expect(actual).to.be.an('array').eql([false]);
+
+    actual = ap.resolveArray(sample1, 'item2.aNullValue');
+    expect(actual).to.be.an('array').eql([]);
+
+    actual = ap.resolveArray(sample1, 'item2.aNumber');
+    expect(actual).to.be.an('array').eql([123]);
+
+    actual = ap.resolveArray(sample1, 'item2.aString');
+    expect(actual).to.be.an('array').eql(['Hello World']);
+
+  });
+
+  it('resolves array properly', function() {
+    let actual;
+
+    actual = ap.resolveArray(sample1, 'item2.anArrayOfNumbers');
+    expect(actual).to.be.an('array').eql([123, 456, 789]);
+
+    actual = ap.resolveArray(sample1, 'item2.anArrayOfStrings');
+    expect(actual).to.be.an('array').eql(['abc', 'def', 'ghi']);
+
   });
 
 });

@@ -42,6 +42,13 @@ $ npm install simple-object-attribute-resolver
 ```
 
 ## Methods
+### soar.isEmpty(data)
+Convinent method that checks if data is empty.  An empty data is null, undefined, array with length zero or object without any own property.
+* params:
+  * data - the data to check
+* return:
+  * true - if empty
+
 ### soar.resolve(data, path)
 Returns the value or reference to the element in the data object given by path.
 * params:
@@ -50,12 +57,27 @@ Returns the value or reference to the element in the data object given by path.
 * return:
   * the value of the element or the reference to the element in the data object.
 
+### soar.resolveArray(data, path)
+Returns an array for the value or reference to the element in the data object given by path.
+* params:
+  * data - the object to resolve the value from
+  * path - simple dot path expression
+* return:
+  * the value itself if it was an array or wrap the value in an array.
+
 ### soar.resolver(path)
 Returns the curried resolver function for the given path.  It is useful to resolve the same attribute across different data object.
 * params:
   * path - simple dot path expression
 * return:
   * a resolver function for the given path which could resolve the attribute by passing data object.
+
+### soar.arrayResolver(path)
+The resolver counter part of resolveArray.
+* params:
+  * path - simple dot path expression
+* return:
+  * a resolver function for the given path which could resolve the attribute as an Array by passing data object.
 
 #### Notes
 1. Be aware of the side effects.  As the return value could be the reference to the elements in the data object, modifying the attribute of the reference could affect the source data (shallow copy).
